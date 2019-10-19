@@ -1,52 +1,18 @@
-a fork of https://gist.github.com/Chandler/fb7a070f52883849de35
+this is fork of https://github.com/andxyz/slack-history-export
 
-My fork is solely to document how to use the code with python3. If you are
-unfamiliar with python3 but own a mac laptop.
-
-The script finds all channels, private channels and direct messages
-that your user participates in. it downloads the complete history for
-those converations and writes each conversation out to seperate json files.
-
-This user centric history gathering is nice because the official slack data exporter
-only exports public channels.
-
-PS, this only works if your slack team has a paid account which allows for unlimited history.
-
-PPS, this use of the API is blessed by Slack.
-https://get.slack.help/hc/en-us/articles/204897248
-
-> If you want to export the contents of your own private groups and direct messages please see our API documentation.
 
 - step 1 visit https://api.slack.com/docs/oauth-test-tokens and click "generate-test-token"
 
-  ```shell
-  open 'https://api.slack.com/docs/oauth-test-tokens'
-  ```
 
 - step 2 check https://api.slack.com/tokens
 
-  ```shell
-  open 'https://api.slack.com/tokens'
-  ```
+- step 3 set your token as env variable ``` export TOKEN=<your token here>```
 
-#### A simple usage example
+- step 4 run initial script ``` bash start.sh ```
 
-```shell
-cd slack-history-export/
-brew install python3
-pip3 install pipenv
-pipenv install
-pipenv shell
-pipenv run python slack_history.py --token='123token'
-```
+you need to wait until all data from the slack will be retrieved. You can find your messages on files which include "_full_history.txt" on the name.
+Those files are in /base_jsons/ catalogs inside the channels/private_channels/direct_messages catalogs.
 
-#### other usage examples
-
-```shell
-pipenv run python slack_history.py --token='123token'
-pipenv run python slack_history.py --token='123token' --dryRun=True
-pipenv run python slack_history.py --token='123token' --skipDirectMessages
-pipenv run python slack_history.py --token='123token' --skipDirectMessages --skipPrivateChannels
-```
-
-see [./slack_history.py](slack_history.py)
+- step 5 set main script in crontab 
+``` crontab -e
+0 8 * * * bash <path to catalog>/main.sh```
